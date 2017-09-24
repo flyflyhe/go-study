@@ -1,0 +1,11 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/go-redis/redis",
+			"repository": "https://github.com/go-redis/redis",
+			"revision": "975882d73d21759d45a4eb49652064083bc23e61",
+			"branch": "master"
+		}
+	]
+}
