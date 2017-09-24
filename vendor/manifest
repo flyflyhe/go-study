@@ -6,6 +6,12 @@
 			"repository": "https://github.com/go-redis/redis",
 			"revision": "975882d73d21759d45a4eb49652064083bc23e61",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/go-sql-driver/mysql",
+			"repository": "https://github.com/go-sql-driver/mysql",
+			"revision": "7785c74297136c027fdf2fd6f8931c0e19be8aa7",
+			"branch": "master"
 		}
 	]
 }
