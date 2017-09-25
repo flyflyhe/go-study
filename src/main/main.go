@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"services"
+	sj "services/json"
 )
 
 func main() {
@@ -13,4 +14,6 @@ func main() {
 		fmt.Println("结束")
 	}
 	fmt.Println(data)
+	game := sj.GetGame()
+	fmt.Println(game)
 }
