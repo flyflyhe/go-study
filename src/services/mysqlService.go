@@ -1,12 +1,14 @@
 package services
 
 import (
+	"config"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func GetClient() *sql.DB {
-	db, _ := sql.Open("mysql", "user:@/test")
+func GetMysql() (*sql.DB, error) {
+	config := config.GetMysql()
+	db, err := sql.Open(config.Driver, config.Dsn)
 
-	return db
+	return db, err
 }

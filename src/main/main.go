@@ -6,8 +6,5 @@ import (
 )
 
 func main() {
-	redis := services.GetRedis()
 
-	pong, err := redis.Ping().Result()
-	fmt.Println(pong, err)
 }

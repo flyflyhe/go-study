@@ -2,7 +2,6 @@ package services
 
 import (
 	"config"
-	"fmt"
 	"github.com/go-redis/redis"
 )
 
