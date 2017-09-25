@@ -6,6 +6,11 @@ import (
 )
 
 func main() {
-	date := services.GetDate(-1)
-	fmt.Println(date)
+	data := services.GetUserSpeedHistoryData()
+	if data == nil {
+		fmt.Println("异常")
+	} else {
+		fmt.Println("结束")
+	}
+	fmt.Println(data)
 }
