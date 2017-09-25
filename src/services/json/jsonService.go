@@ -10,6 +10,7 @@ import (
 const url = "http://log.lonlife.org/game/list"
 
 type game struct {
+	Id   int
 	Name string
 	Area string
 }
@@ -21,13 +22,16 @@ func getGameJson() []byte {
 	return body
 }
 
-func GetGame() []game {
+func GetGame() map[int]game {
 	strByte := getGameJson()
-	//m1 := make(map[int]game)
+	m1 := make(map[int]game)
 	var games []game
 	err := json.Unmarshal(strByte, &games)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	return games
+	for _, val := range games {
+		m1[val.Id] = val
+	}
+	return m1
 }
