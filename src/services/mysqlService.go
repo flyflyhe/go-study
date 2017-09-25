@@ -6,5 +6,7 @@ import (
 )
 
 func GetClient() *sql.DB {
-	db,err = sql.Open("mysql", "user:@/test")
+	db, _ := sql.Open("mysql", "user:@/test")
+
+	return db
 }
