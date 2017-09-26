@@ -161,6 +161,7 @@ func Run() {
 
 				if _, ok := trustedlistTmp[pk]; ok {
 					trustedlistTmp[pk].addFlow(sum)
+					trustedlistTmp[pk].addUsers(1)
 					if strings.Index(trustedlistTmp[pk].Ports, v.Port) == -1 {
 						trustedlistTmp[pk].addPorts(v.Port)
 					}
@@ -241,8 +242,17 @@ func Run() {
 	}
 
 	redis := redis.GetRedis()
-
-	for tl := range trustedlistFinal {
+	redis.Select(6)
+	for pk, tl := range trustedlistFinal {
+		redis.HSet(pk, "pk", tl.Pk)
+		redis.HSet(pk, "flow", tl.Flow)
+		redis.HSet(pk, "gid", tl.Gid)
+		redis.HSet(pk, "area", tl.Area)
+		redis.HSet(pk, "name", tl.Name)
+		redis.HSet(pk, "ip", tl.Ip)
+		redis.HSet(pk, "process", tl.Process)
+		redis.HSet(pk, "ports", tl.Ports)
+		redis.HSet(pk, "users", tl.Users)
 	}
 }
 
