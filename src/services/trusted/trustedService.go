@@ -241,8 +241,8 @@ func Run() {
 		}
 	}
 
-	redis := redis.GetRedis()
-	redis.Select(6)
+	rc := redis.GetRedis()
+	rc.Select(6)
 	for pk, tl := range trustedlistFinal {
 		redis.HSet(pk, "pk", tl.Pk)
 		redis.HSet(pk, "flow", tl.Flow)
@@ -254,7 +254,7 @@ func Run() {
 		redis.HSet(pk, "ports", tl.Ports)
 		redis.HSet(pk, "users", tl.Users)
 	}
-	redis.Select(7)
+	rc.Select(7)
 	for pk, tlu := range trustedlistuserFinal {
 		redis.HSet(pk, "flow", tlu.Flow)
 		redis.HSet(pk, "pk", tlu.Pk)
