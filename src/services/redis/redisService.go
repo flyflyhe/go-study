@@ -11,7 +11,7 @@ func GetRedis5() *redis.Client {
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.Host + ":" + config.Port,
 		Password: config.Password,
-		DB:       5,
+		DB:       6,
 	})
 
 	return client
@@ -23,7 +23,7 @@ func GetRedis6() *redis.Client {
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.Host + ":" + config.Port,
 		Password: config.Password,
-		DB:       6,
+		DB:       7,
 	})
 
 	return client

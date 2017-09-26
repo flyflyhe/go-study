@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 const USH = "userspeedhistory"
@@ -106,6 +107,8 @@ func GetUserSpeedHistoryData() map[int]UidGid {
 }
 
 func Run() {
+	timeObj := time.Now()
+	startUnix = timeObj.Unix()
 	var wg sync.WaitGroup
 	limit := 20000
 	ushData := GetUserSpeedHistoryData()
@@ -214,53 +217,74 @@ func Run() {
 	close(trustedlist)
 	close(trustedlistuser)
 
+	wg.Add(2)
 	trustedlistFinal := make(map[string]*TrustedList)
 	trustedlistuserFinal := make(map[string]*TrustedListUser)
 
-	for tlmapTmp := range trustedlist {
-		for k, v := range tlmapTmp {
-			if _, ok := trustedlistFinal[k]; ok {
-				trustedlistFinal[k].addFlow(v.Flow)
-				trustedlistFinal[k].addUsers(v.Users)
-				trustedlistFinal[k].mergePorts(v.Ports)
-			} else {
-				trustedlistFinal[k] = v
+	fmt.Println("数据计算开始")
+	go func () {
+		default wg.Done()
+		for tlmapTmp := range trustedlist {
+			for k, v := range tlmapTmp {
+				if _, ok := trustedlistFinal[k]; ok {
+					trustedlistFinal[k].addFlow(v.Flow)
+					trustedlistFinal[k].addUsers(v.Users)
+					trustedlistFinal[k].mergePorts(v.Ports)
+				} else {
+					trustedlistFinal[k] = v
+				}
 			}
 		}
-	}
 
-	for tlumapTmp := range trustedlistuser {
-		for k, v := range tlumapTmp {
-			if _, ok := trustedlistuserFinal[k]; ok {
-				trustedlistuserFinal[k].addFlow(v.Flow)
-				trustedlistuserFinal[k].mergePorts(v.Ports)
-			} else {
-				trustedlistuserFinal[k] = v
+		rc := redis.GetRedis6()
+		for pk, tl := range trustedlistFinal {
+			if tl.Flow < 100000 {
+				continue
 			}
-			//fmt.Println(v)
+			rc.HSet(pk, "pk", tl.Pk)
+			rc.HSet(pk, "flow", tl.Flow)
+			rc.HSet(pk, "gid", tl.Gid)
+			rc.HSet(pk, "area", tl.Area)
+			rc.HSet(pk, "name", tl.Name)
+			rc.HSet(pk, "ip", tl.Ip)
+			rc.HSet(pk, "process", tl.Process)
+			rc.HSet(pk, "ports", tl.Ports)
+			rc.HSet(pk, "users", tl.Users)
 		}
-	}
-
-	rc := redis.GetRedis5()
-	for pk, tl := range trustedlistFinal {
-		rc.HSet(pk, "pk", tl.Pk)
-		rc.HSet(pk, "flow", tl.Flow)
-		rc.HSet(pk, "gid", tl.Gid)
-		rc.HSet(pk, "area", tl.Area)
-		rc.HSet(pk, "name", tl.Name)
-		rc.HSet(pk, "ip", tl.Ip)
-		rc.HSet(pk, "process", tl.Process)
-		rc.HSet(pk, "ports", tl.Ports)
-		rc.HSet(pk, "users", tl.Users)
-	}
-	rc2 := redis.GetRedis6()
-	for pk, tlu := range trustedlistuserFinal {
-		rc2.HSet(pk, "flow", tlu.Flow)
-		rc2.HSet(pk, "pk", tlu.Pk)
-		rc2.HSet(pk, "ports", tlu.Ports)
-		rc2.HSet(pk, "start_time", tlu.Start_time)
-		rc2.HSet(pk, "uid", tlu.Uid)
-	}
+		fmt.Println("redis6计算完成")
+	}()
+	
+	go func () {
+		defer wd.Done()
+		for tlumapTmp := range trustedlistuser {
+			if tl.Flow < 100000 {
+				continue
+			}
+			for k, v := range tlumapTmp {
+				if _, ok := trustedlistuserFinal[k]; ok {
+					trustedlistuserFinal[k].addFlow(v.Flow)
+					trustedlistuserFinal[k].mergePorts(v.Ports)
+				} else {
+					trustedlistuserFinal[k] = v
+				}
+				//fmt.Println(v)
+			}
+		}
+	
+		
+		rc2 := redis.GetRedis7()
+		for pk, tlu := range trustedlistuserFinal {
+			rc2.HSet(pk, "flow", tlu.Flow)
+			rc2.HSet(pk, "pk", tlu.Pk)
+			rc2.HSet(pk, "ports", tlu.Ports)
+			rc2.HSet(pk, "start_time", tlu.Start_time)
+			rc2.HSet(pk, "uid", tlu.Uid)
+		}
+		fmt.Println("redis7计算完成")		
+	}()
+	wg.Wait()
+	fmt.Println(timeObj.Unix() - startUnix)
+	fmt.Println("结束")
 }
 
 func CoumputeTimes(start int, end int, limit int) int {
