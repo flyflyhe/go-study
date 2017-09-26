@@ -235,8 +235,9 @@ func Run() {
 				}
 			}
 		}
-
-		fmt.Println("user"+len(trustedlistFinal))
+		
+		fmt.Println("6库长度")
+		fmt.Println(len(trustedlistFinal))
 		
 		rc := redis.GetRedis6()
 		for pk, tl := range trustedlistFinal {
@@ -270,7 +271,8 @@ func Run() {
 			}
 		}
 		
-		fmt.Println("user"+len(trustedlistuserFinal))
+		fmt.Println("7库长度")		
+		fmt.Println(len(trustedlistuserFinal))
 		
 		rc2 := redis.GetRedis7()
 		for pk, tlu := range trustedlistuserFinal {
