@@ -5,7 +5,7 @@ import (
 	"github.com/go-redis/redis"
 )
 
-func GetRedis5() *redis.Client {
+func GetRedis6() *redis.Client {
 	config := config.GetRedis()
 
 	client := redis.NewClient(&redis.Options{
@@ -17,7 +17,7 @@ func GetRedis5() *redis.Client {
 	return client
 }
 
-func GetRedis6() *redis.Client {
+func GetRedis7() *redis.Client {
 	config := config.GetRedis()
 
 	client := redis.NewClient(&redis.Options{

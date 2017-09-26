@@ -108,7 +108,7 @@ func GetUserSpeedHistoryData() map[int]UidGid {
 
 func Run() {
 	timeObj := time.Now()
-	startUnix = timeObj.Unix()
+	startUnix := timeObj.Unix()
 	var wg sync.WaitGroup
 	limit := 20000
 	ushData := GetUserSpeedHistoryData()
@@ -236,6 +236,8 @@ func Run() {
 			}
 		}
 
+		fmt.Println("user"+len(trustedlistFinal))
+		
 		rc := redis.GetRedis6()
 		for pk, tl := range trustedlistFinal {
 			if tl.Flow < 100000 {
@@ -255,11 +257,8 @@ func Run() {
 	}()
 	
 	go func () {
-		defer wd.Done()
+		defer wg.Done()
 		for tlumapTmp := range trustedlistuser {
-			if tl.Flow < 100000 {
-				continue
-			}
 			for k, v := range tlumapTmp {
 				if _, ok := trustedlistuserFinal[k]; ok {
 					trustedlistuserFinal[k].addFlow(v.Flow)
@@ -270,7 +269,8 @@ func Run() {
 				//fmt.Println(v)
 			}
 		}
-	
+		
+		fmt.Println("user"+len(trustedlistuserFinal))
 		
 		rc2 := redis.GetRedis7()
 		for pk, tlu := range trustedlistuserFinal {
