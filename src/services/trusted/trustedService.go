@@ -244,23 +244,23 @@ func Run() {
 	rc := redis.GetRedis()
 	rc.Select(6)
 	for pk, tl := range trustedlistFinal {
-		redis.HSet(pk, "pk", tl.Pk)
-		redis.HSet(pk, "flow", tl.Flow)
-		redis.HSet(pk, "gid", tl.Gid)
-		redis.HSet(pk, "area", tl.Area)
-		redis.HSet(pk, "name", tl.Name)
-		redis.HSet(pk, "ip", tl.Ip)
-		redis.HSet(pk, "process", tl.Process)
-		redis.HSet(pk, "ports", tl.Ports)
-		redis.HSet(pk, "users", tl.Users)
+		rc.HSet(pk, "pk", tl.Pk)
+		rc.HSet(pk, "flow", tl.Flow)
+		rc.HSet(pk, "gid", tl.Gid)
+		rc.HSet(pk, "area", tl.Area)
+		rc.HSet(pk, "name", tl.Name)
+		rc.HSet(pk, "ip", tl.Ip)
+		rc.HSet(pk, "process", tl.Process)
+		rc.HSet(pk, "ports", tl.Ports)
+		rc.HSet(pk, "users", tl.Users)
 	}
 	rc.Select(7)
 	for pk, tlu := range trustedlistuserFinal {
-		redis.HSet(pk, "flow", tlu.Flow)
-		redis.HSet(pk, "pk", tlu.Pk)
-		redis.HSet(pk, "ports", tlu.Ports)
-		redis.HSet(pk, "start_time", tlu.Start_time)
-		redis.HSet(pk, "uid", tlu.Uid)
+		rc.HSet(pk, "flow", tlu.Flow)
+		rc.HSet(pk, "pk", tlu.Pk)
+		rc.HSet(pk, "ports", tlu.Ports)
+		rc.HSet(pk, "start_time", tlu.Start_time)
+		rc.HSet(pk, "uid", tlu.Uid)
 	}
 }
 
