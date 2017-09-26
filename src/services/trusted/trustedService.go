@@ -237,7 +237,7 @@ func Run() {
 			} else {
 				trustedlistuserFinal[k] = v
 			}
-			fmt.Println(v)
+			//fmt.Println(v)
 		}
 	}
 
