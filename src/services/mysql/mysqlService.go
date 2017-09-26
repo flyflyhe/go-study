@@ -1,4 +1,4 @@
-package services
+package mysql
 
 import (
 	"config"
