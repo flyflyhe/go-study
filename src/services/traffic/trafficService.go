@@ -46,7 +46,7 @@ func GetEndId(i int) int {
 
 func GetById(start int, limit int) []trafficAnaly {
 	sql := "select id,vni, process,domain,ip,port,uplink_traffic,downlink_traffic,start_time,end_time from " +
-		tablename + " where id > ? order by id asc limit ?"
+		tablename + " where id > ? and port not in (53, 80) order by id asc limit ?"
 	//fmt.Println(sql)
 	var tas []trafficAnaly
 	rows, err := db.Query(sql, start, limit)
