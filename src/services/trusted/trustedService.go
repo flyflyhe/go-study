@@ -276,6 +276,9 @@ func Run() {
 		
 		rc2 := redis.GetRedis7()
 		for pk, tlu := range trustedlistuserFinal {
+			if tlu.Flow < 100000 {
+				continue
+			}
 			rc2.HSet(pk, "flow", tlu.Flow)
 			rc2.HSet(pk, "pk", tlu.Pk)
 			rc2.HSet(pk, "ports", tlu.Ports)
