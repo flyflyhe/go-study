@@ -5,13 +5,25 @@ import (
 	"github.com/go-redis/redis"
 )
 
-func GetRedis() *redis.Client {
+func GetRedis5() *redis.Client {
 	config := config.GetRedis()
 
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.Host + ":" + config.Port,
 		Password: config.Password,
-		DB:       config.Select,
+		DB:       5,
+	})
+
+	return client
+}
+
+func GetRedis6() *redis.Client {
+	config := config.GetRedis()
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     config.Host + ":" + config.Port,
+		Password: config.Password,
+		DB:       6,
 	})
 
 	return client
