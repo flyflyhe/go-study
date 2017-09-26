@@ -223,7 +223,7 @@ func Run() {
 
 	fmt.Println("数据计算开始")
 	go func () {
-		default wg.Done()
+		defer wg.Done()
 		for tlmapTmp := range trustedlist {
 			for k, v := range tlmapTmp {
 				if _, ok := trustedlistFinal[k]; ok {
