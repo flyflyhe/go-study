@@ -254,6 +254,14 @@ func Run() {
 		redis.HSet(pk, "ports", tl.Ports)
 		redis.HSet(pk, "users", tl.Users)
 	}
+	redis.Select(7)
+	for pk, tlu := range trustedlistuserFinal {
+		redis.HSet(pk, "flow", tlu.Flow)
+		redis.HSet(pk, "pk", tlu.Pk)
+		redis.HSet(pk, "ports", tlu.Ports)
+		redis.HSet(pk, "start_time", tlu.Start_time)
+		redis.HSet(pk, "uid", tlu.Uid)
+	}
 }
 
 func CoumputeTimes(start int, end int, limit int) int {
