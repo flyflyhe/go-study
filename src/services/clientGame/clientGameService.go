@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-const url = "http://log.lonlife.org/game/list"
+const url = ""
 
 type game struct {
 	Id   int
