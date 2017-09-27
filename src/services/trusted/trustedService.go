@@ -254,6 +254,7 @@ func Run() {
 			rc.HSet(pk, "process", tl.Process)
 			rc.HSet(pk, "ports", tl.Ports)
 			rc.HSet(pk, "users", tl.Users)
+			rc.HSet(pk, "created", tl.Created)
 		}
 		fmt.Println("redis6计算完成")
 	}()
