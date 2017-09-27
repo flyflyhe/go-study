@@ -1,6 +1,7 @@
 package trusted
 
 import (
+	"encoding/json"
 	"fmt"
 	"services/clientGame"
 	"services/date"
@@ -222,7 +223,7 @@ func Run() {
 	trustedlistuserFinal := make(map[string]*TrustedListUser)
 
 	fmt.Println("数据计算开始")
-	go func () {
+	go func() {
 		defer wg.Done()
 		for tlmapTmp := range trustedlist {
 			for k, v := range tlmapTmp {
@@ -235,10 +236,10 @@ func Run() {
 				}
 			}
 		}
-		
+
 		fmt.Println("6库长度")
 		fmt.Println(len(trustedlistFinal))
-		
+
 		rc := redis.GetRedis6()
 		for pk, tl := range trustedlistFinal {
 			if tl.Flow < 100000 {
@@ -256,8 +257,8 @@ func Run() {
 		}
 		fmt.Println("redis6计算完成")
 	}()
-	
-	go func () {
+
+	go func() {
 		defer wg.Done()
 		for tlumapTmp := range trustedlistuser {
 			for k, v := range tlumapTmp {
@@ -270,22 +271,24 @@ func Run() {
 				//fmt.Println(v)
 			}
 		}
-		
-		fmt.Println("7库长度")		
+
+		fmt.Println("7库长度")
 		fmt.Println(len(trustedlistuserFinal))
-		
+
 		rc2 := redis.GetRedis7()
-		for pk, tlu := range trustedlistuserFinal {
+		for uip, tlu := range trustedlistuserFinal {
 			if tlu.Flow < 100000 {
 				continue
 			}
-			rc2.HSet(pk, "flow", tlu.Flow)
-			rc2.HSet(pk, "pk", tlu.Pk)
-			rc2.HSet(pk, "ports", tlu.Ports)
-			rc2.HSet(pk, "start_time", tlu.Start_time)
-			rc2.HSet(pk, "uid", tlu.Uid)
+			pk = tlu.Pk
+			rc2.HSet(pk, uip, json.Marshal(tlu))
+			// rc2.HSet(pk, "flow", tlu.Flow)
+			// rc2.HSet(pk, "pk", tlu.Pk)
+			// rc2.HSet(pk, "ports", tlu.Ports)
+			// rc2.HSet(pk, "start_time", tlu.Start_time)
+			// rc2.HSet(pk, "uid", tlu.Uid)
 		}
-		fmt.Println("redis7计算完成")		
+		fmt.Println("redis7计算完成")
 	}()
 	wg.Wait()
 	fmt.Println(timeObj.Unix() - startUnix)
