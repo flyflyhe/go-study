@@ -292,7 +292,8 @@ func Run() {
 		fmt.Println("redis7计算完成")
 	}()
 	wg.Wait()
-	fmt.Println(timeObj.Unix() - startUnix)
+	timeObj2 := time.Now()
+	fmt.Println(timeObj2.Unix() - startUnix)
 	fmt.Println("结束")
 }
 
