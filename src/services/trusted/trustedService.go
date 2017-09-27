@@ -277,10 +277,8 @@ func Run() {
 		fmt.Println(len(trustedlistuserFinal))
 
 		rc2 := redis.GetRedis7()
+		rc2.FlushDB()
 		for uip, tlu := range trustedlistuserFinal {
-			if tlu.Flow < 100000 {
-				continue
-			}
 			pk := tlu.Pk
 			jsonData, _ := json.Marshal(tlu)
 			rc2.HSet(pk, uip, jsonData)
