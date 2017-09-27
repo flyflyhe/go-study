@@ -280,8 +280,9 @@ func Run() {
 			if tlu.Flow < 100000 {
 				continue
 			}
-			pk = tlu.Pk
-			rc2.HSet(pk, uip, json.Marshal(tlu))
+			pk := tlu.Pk
+			jsonData, _ := json.Marshal(tlu)
+			rc2.HSet(pk, uip, jsonData)
 			// rc2.HSet(pk, "flow", tlu.Flow)
 			// rc2.HSet(pk, "pk", tlu.Pk)
 			// rc2.HSet(pk, "ports", tlu.Ports)
