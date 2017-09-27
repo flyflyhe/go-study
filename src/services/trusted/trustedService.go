@@ -135,6 +135,7 @@ func Run() {
 		//fmt.Println(startId)
 		go func() {
 			defer wg.Done()
+			println(counter)
 
 			trustedlistTmp := make(map[string]*TrustedList)
 			trustedlistuserTmp := make(map[string]*TrustedListUser)
@@ -207,7 +208,6 @@ func Run() {
 			}
 
 			//println(startId)
-			println(counter)
 			trustedlist <- trustedlistTmp
 			trustedlistuser <- trustedlistuserTmp
 		}()
