@@ -17,7 +17,7 @@ func GetRedis() Redis {
 	} else {
 		config.Host = "127.0.0.1"
 		config.Port = "6379"
-		config.Password = "e30ce5c05eee807018f4810fcf7ccf65"
+		config.Password = ""
 		config.Select = 0
 	}
 	return config
