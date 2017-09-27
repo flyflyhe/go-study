@@ -33,3 +33,9 @@ func GetDateNight(i int) string {
 
 	return tmpStr
 }
+
+func GetDate() string {
+	tmpStr := date.Format(DATE_TIME)
+
+	return tmpStr
+}

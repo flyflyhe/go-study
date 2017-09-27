@@ -109,7 +109,7 @@ func GetUserSpeedHistoryData() map[int]UidGid {
 
 func Run() {
 	timeObj := time.Now()
-	startUnix := timeObj.Unix()
+	startDate := date.GetDate()
 	var wg sync.WaitGroup
 	limit := 20000
 	ushData := GetUserSpeedHistoryData()
@@ -291,8 +291,8 @@ func Run() {
 		fmt.Println("redis7计算完成")
 	}()
 	wg.Wait()
-	timeObj2 := time.Now()
-	fmt.Println(timeObj2.Unix() - startUnix)
+	endDate := date.GetDate()
+	fmt.Println("开始时间" + startDate + "结束时间" + endDate)
 	fmt.Println("结束")
 }
 
