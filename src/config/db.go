@@ -21,13 +21,7 @@ func GetMysql() Mysql {
 		db.Database = "go"
 		db.Dsn = "root:@tcp(127.0.0.1:3306)/go?charset=utf8"
 	} else {
-		db.Driver = "mysql"
-		db.Username = "root"
-		db.Password = "^YHNMJU&8ikm"
-		db.Host = "127.0.0.1"
-		db.Port = "3306"
-		db.Database = "go"
-		db.Dsn = "root:^YHNMJU&8ikm@tcp(127.0.0.1:3306)/lonlife?charset=utf8"
+
 	}
 	return db
 }

@@ -1,4 +1,4 @@
 package config
 
 const DEBUG = true
-const TESTING = false
+const TESTING = true
