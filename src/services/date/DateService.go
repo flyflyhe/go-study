@@ -12,7 +12,7 @@ const DAY_TIME = 86400
 
 var date time.Time
 
-func init() {
+func Init() {
 	now := time.Now()
 	location, _ := time.LoadLocation("Asia/Shanghai")
 	date = now.In(location)

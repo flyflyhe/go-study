@@ -12,7 +12,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"time"
 )
 
 const USH = "userspeedhistory"
@@ -108,7 +107,6 @@ func GetUserSpeedHistoryData() map[int]UidGid {
 }
 
 func Run() {
-	timeObj := time.Now()
 	startDate := date.GetDate()
 	var wg sync.WaitGroup
 	limit := 20000
@@ -133,9 +131,9 @@ func Run() {
 		}
 		tasData := traffic.GetById(startId, limit)
 		//fmt.Println(startId)
+		println(counter)
 		go func() {
 			defer wg.Done()
-			println(counter)
 
 			trustedlistTmp := make(map[string]*TrustedList)
 			trustedlistuserTmp := make(map[string]*TrustedListUser)
@@ -291,6 +289,7 @@ func Run() {
 		fmt.Println("redis7计算完成")
 	}()
 	wg.Wait()
+	date.Init()
 	endDate := date.GetDate()
 	fmt.Println("开始时间" + startDate + "结束时间" + endDate)
 	fmt.Println("结束")
