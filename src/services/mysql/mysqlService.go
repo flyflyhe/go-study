@@ -3,6 +3,7 @@ package mysql
 import (
 	"config"
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -16,6 +17,7 @@ func GetMysql() (*sql.DB, error) {
 		return db, err
 	}
 	config := config.GetMysql()
+	fmt.Println(config)
 	db, err = sql.Open(config.Driver, config.Dsn)
 
 	return db, err

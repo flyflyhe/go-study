@@ -1,3 +1,4 @@
 bin
 pkg
 vendor/src
+config/db_prod.json
