@@ -1,5 +1,10 @@
 package config
 
+import (
+	"fmt"
+	"path/filepath"
+)
+
 type Mysql struct {
 	Driver   string
 	Username string
@@ -12,22 +17,14 @@ type Mysql struct {
 
 func GetMysql() Mysql {
 	var db Mysql
+	dir, _ := filepath.Abs("./config")
 	if TESTING {
-		db.Driver = "mysql"
-		db.Username = "root"
-		db.Password = ""
-		db.Port = "3306"
-		db.Host = "127.0.0.1"
-		db.Database = "go"
-		db.Dsn = "root:@tcp(127.0.0.1:3306)/go?charset=utf8"
+		err := parseDb(dir+"/db_dev.json", &db)
+		if err != nil {
+			fmt.Println(err)
+		}
 	} else {
-		db.Driver = "mysql"
-		db.Username = "root"
-		db.Password = "^YHNMJU&8ikm"
-		db.Host = "127.0.0.1"
-		db.Port = "3306"
-		db.Database = "go"
-		db.Dsn = "root:^YHNMJU&8ikm@tcp(127.0.0.1:3306)/lonlife?charset=utf8"
+		parseDb(dir+"/db_prod.json", &db)
 	}
 	return db
 }

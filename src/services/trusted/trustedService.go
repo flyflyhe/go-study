@@ -227,7 +227,7 @@ func Run() {
 			for k, v := range tlmapTmp {
 				if _, ok := trustedlistFinal[k]; ok {
 					trustedlistFinal[k].addFlow(v.Flow)
-					trustedlistFinal[k].addUsers(v.Users)
+					//trustedlistFinal[k].addUsers(v.Users)
 					trustedlistFinal[k].mergePorts(v.Ports)
 				} else {
 					trustedlistFinal[k] = v
