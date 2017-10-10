@@ -326,11 +326,14 @@ func GetTrustedList() map[string]TrustedList {
 	date.Reinit()
 	currentDate := date.GetDate()
 	tl := new(TrustedList)
+	redis7 := redis.GetRedis7()
 	redis := redis.GetRedis6()
+
 	stringSliceCmd := redis.Keys("*")
 	keys, _ := stringSliceCmd.Result()
 	for _, k := range keys {
 		tmpMap, _ := redis.HGetAll(k).Result()
+
 		tl.Pk = tmpMap["pk"]
 		tl.Flow, _ = strconv.Atoi(tmpMap["flow"])
 		tl.Gid, _ = strconv.Atoi(tmpMap["gid"])
@@ -339,7 +342,7 @@ func GetTrustedList() map[string]TrustedList {
 		tl.Ip = tmpMap["ip"]
 		tl.Process = tmpMap["process"]
 		tl.Ports = tmpMap["ports"]
-		tl.Users, _ = strconv.Atoi(tmpMap["users"])
+		tl.Users = int(redis7.HLen(tl.Pk).Val())
 		tl.Real_flow = 0
 		tl.Created = currentDate
 		tl.Updated = currentDate
