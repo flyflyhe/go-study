@@ -8,6 +8,7 @@ import (
 	"services/mysql"
 	"services/redis"
 	"services/slices"
+	"services/stringPlus"
 	"services/traffic"
 	"strconv"
 	"strings"
@@ -15,6 +16,8 @@ import (
 )
 
 const USH = "userspeedhistory"
+const TrustedListTable = "trustedList2"
+const TrustedListUserTable = "trustedListUser2"
 
 type TrustedList struct {
 	Pk        string
@@ -291,6 +294,7 @@ func Run() {
 	wg.Wait()
 	date.Reinit()
 	endDate := date.GetDate()
+	Div2()
 	fmt.Println("开始时间" + startDate + "结束时间" + endDate)
 	fmt.Println("结束")
 }
@@ -314,5 +318,84 @@ func Div2() {
 		fmt.Println(k)
 		tmpFlow, _ := redis.HGet(k, "flow").Int64()
 		redis.HSet(k, "flow", int64(tmpFlow/2))
+	}
+}
+
+func GetTrustedList() map[string]TrustedList {
+	trustedlistMap := make(map[string]TrustedList)
+	date.Reinit()
+	currentDate := date.GetDate()
+	tl := new(TrustedList)
+	redis := redis.GetRedis6()
+	stringSliceCmd := redis.Keys("*")
+	keys, _ := stringSliceCmd.Result()
+	for _, k := range keys {
+		tmpMap, _ := redis.HGetAll(k).Result()
+		tl.Pk = tmpMap["pk"]
+		tl.Flow, _ = strconv.Atoi(tmpMap["flow"])
+		tl.Gid, _ = strconv.Atoi(tmpMap["gid"])
+		tl.Area = tmpMap["area"]
+		tl.Name = tmpMap["name"]
+		tl.Ip = tmpMap["ip"]
+		tl.Process = tmpMap["process"]
+		tl.Ports = tmpMap["ports"]
+		tl.Users, _ = strconv.Atoi(tmpMap["users"])
+		tl.Real_flow = 0
+		tl.Created = currentDate
+		tl.Updated = currentDate
+		trustedlistMap[tl.Pk] = *tl
+	}
+	return trustedlistMap
+}
+
+func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
+	counter := 0
+	var values string
+	sql := "insert into `" + TrustedListTable + "` (pk, flow, gid, area, name, ip, process, ports, users, real_flow, created, updated) values "
+	db, _ := mysql.GetMysql()
+	tx, _ := db.Begin()
+	tx.Exec("truncate table `" + TrustedListTable + "`")
+	for _, v := range trustedlistMap {
+		counter++
+		tmpValues := "(':pk', :flow, :gid, ':area', ':name', ':ip', ':process', ':ports', ':users', ':real_flow', ':created', ':updated'),"
+		tmpValues = stringPlus.Strtr(tmpValues, map[string]string{
+			":pk":        v.Pk,
+			":flow":      strconv.Itoa(v.Flow),
+			":gid":       strconv.Itoa(v.Gid),
+			":area":      v.Area,
+			":name":      v.Name,
+			":ip":        v.Ip,
+			":process":   v.Process,
+			":ports":     v.Ports,
+			":users":     strconv.Itoa(v.Users),
+			":real_flow": strconv.Itoa(v.Real_flow),
+			":created":   v.Created,
+			":updated":   v.Updated,
+		})
+		values += tmpValues
+		if counter == batch {
+			rune := []rune(values)
+			values = string(rune[:len(rune)-1])
+			_, err := tx.Exec(sql + values)
+			if err != nil {
+				tx.Rollback()
+				break
+			}
+			counter = 0
+			values = ""
+		}
+	}
+	if counter > 0 {
+		rune := []rune(values)
+		values = string(rune[:len(rune)-1])
+		_, err := tx.Exec(sql + values)
+		if err != nil {
+			tx.Rollback()
+		}
+	}
+	err := tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		fmt.Println("执行成功")
 	}
 }
