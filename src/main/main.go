@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	trusted.Run()
+	//trusted.Run()
+	trusted.Div2()
 }

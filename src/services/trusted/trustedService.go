@@ -305,3 +305,14 @@ func CoumputeTimes(start int, end int, limit int) int {
 	}
 	return i
 }
+
+func Div2() {
+	redis := redis.GetRedis6()
+	stringSliceCmd := redis.Keys("*")
+	keys, _ := stringSliceCmd.Result()
+	for i, k := range keys {
+		fmt.Println(k)
+		tmpFlow := redis.HGet(k, "flow")
+		redis.HSet(k, "flow", tmpFlow/2)
+	}
+}
