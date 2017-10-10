@@ -289,7 +289,7 @@ func Run() {
 		fmt.Println("redis7计算完成")
 	}()
 	wg.Wait()
-	date.Init()
+	date.Reinit()
 	endDate := date.GetDate()
 	fmt.Println("开始时间" + startDate + "结束时间" + endDate)
 	fmt.Println("结束")

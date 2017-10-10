@@ -17,7 +17,6 @@ func GetMysql() (*sql.DB, error) {
 		return db, err
 	}
 	config := config.GetMysql()
-	fmt.Println(config)
 	db, err = sql.Open(config.Driver, config.Dsn)
 
 	return db, err
@@ -29,6 +28,7 @@ func GetL3Mysql() (*sql.DB, error) {
 		return l3db, err
 	}
 	config := config.GetL3Mysql()
+	fmt.Println(config)
 	l3db, err = sql.Open(config.Driver, config.Dsn)
 
 	return l3db, err

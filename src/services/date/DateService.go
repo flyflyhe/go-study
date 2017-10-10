@@ -1,6 +1,8 @@
 package date
 
 import (
+	"fmt"
+	"os"
 	"time"
 )
 
@@ -10,16 +12,28 @@ const ZERO_SUFFIX = " 00:00:00"
 const NIGHT_SUFFIX = " 23:59:59"
 const DAY_TIME = 86400
 
-var date time.Time
+var dateIns time.Time
 
-func Init() {
+func init() {
+	TrueInit()
+}
+
+func Reinit() {
+	TrueInit()
+}
+
+func TrueInit() {
 	now := time.Now()
-	location, _ := time.LoadLocation("Asia/Shanghai")
-	date = now.In(location)
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+	dateIns = now.In(location)
 }
 
 func GetDateMorning(i int) string {
-	tmpDate := date.AddDate(0, 0, i)
+	tmpDate := dateIns.AddDate(0, 0, i)
 	tmpStr := tmpDate.Format(DATE_YMD)
 	tmpStr = tmpStr + ZERO_SUFFIX
 
@@ -27,7 +41,7 @@ func GetDateMorning(i int) string {
 }
 
 func GetDateNight(i int) string {
-	tmpDate := date.AddDate(0, 0, i)
+	tmpDate := dateIns.AddDate(0, 0, i)
 	tmpStr := tmpDate.Format(DATE_YMD)
 	tmpStr = tmpStr + NIGHT_SUFFIX
 
@@ -35,7 +49,7 @@ func GetDateNight(i int) string {
 }
 
 func GetDate() string {
-	tmpStr := date.Format(DATE_TIME)
+	tmpStr := dateIns.Format(DATE_TIME)
 
 	return tmpStr
 }
