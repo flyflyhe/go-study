@@ -6,12 +6,20 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"regexp"
+	"fmt"
 )
 
 type Handle struct {
 }
 
 func (e Handle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	text := "<a href='/test' ></a><a href='/home'></a>"	
+	reg := regexp.MustCompile(`<a.*?href=['"]*([^'"\s<>]+)['"]*.*?>`)
+	match := reg.FindAllStringSubmatch(text, -1)
+	for _,v := range match {
+		fmt.Println(v[1])
+	}
 	r.ParseForm()       //解析参数，默认是不会解析的
 	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
 	fmt.Println("path", r.URL.Path)
