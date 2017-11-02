@@ -16,7 +16,7 @@ import (
 )
 
 const USH = "userspeedhistory"
-const TrustedListTable = "trustedList2"
+const TrustedListTable = "trusted_list"
 const TrustedListUserTable = "trustedListUser2"
 
 type TrustedList struct {
