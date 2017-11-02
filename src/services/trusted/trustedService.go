@@ -370,7 +370,7 @@ func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 			":ip":        v.Ip,
 			":process":   v.Process,
 			":ports":     v.Ports,
-			":users":     strconv.Itoa(redis7.HLen(v.Pk).Val()),
+			":users":     strconv.Itoa(redis.HLen(v.Pk).Val()),
 			":real_flow": strconv.Itoa(v.Real_flow),
 			":created":   v.Created,
 			":updated":   v.Updated,
