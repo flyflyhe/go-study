@@ -360,7 +360,7 @@ func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 	tx.Exec("truncate table `" + TrustedListTable + "`")
 	for _, v := range trustedlistMap {
 		counter++
-		tmpUsers, _ := redis.HGetAll(k).Result()
+		tmpUsers, _ := redis.HGetAll(v.Pk).Result()
 		tmpValues := "(':pk', :flow, :gid, ':area', ':name', ':ip', ':process', ':ports', ':users', ':real_flow', ':created', ':updated'),"
 		tmpValues = stringPlus.Strtr(tmpValues, map[string]string{
 			":pk":        v.Pk,
