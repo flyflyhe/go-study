@@ -331,7 +331,7 @@ func GetTrustedList() map[string]TrustedList {
 	stringSliceCmd := redis.Keys("*")
 	keys, _ := stringSliceCmd.Result()
 	for _, k := range keys {
-		tmpMap, _ := redis.HLen(k).Result()
+		tmpMap, _ := redis.HGetAll(k).Result()
 
 		tl.Pk = tmpMap["pk"]
 		tl.Flow, _ = strconv.Atoi(tmpMap["flow"])
@@ -370,7 +370,7 @@ func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 			":ip":        v.Ip,
 			":process":   v.Process,
 			":ports":     v.Ports,
-			":users":     strconv.Itoa(redis.HLen(v.Pk).Val()),
+			":users":     strconv.FormatInt(redis.HLen(v.Pk).Val(), 10),
 			":real_flow": strconv.Itoa(v.Real_flow),
 			":created":   v.Created,
 			":updated":   v.Updated,
