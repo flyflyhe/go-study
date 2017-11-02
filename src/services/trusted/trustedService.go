@@ -353,6 +353,7 @@ func GetTrustedList() map[string]TrustedList {
 
 func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 	counter := 0
+	redis := redis.GetRedis7()
 	var values string
 	sql := "insert into `" + TrustedListTable + "` (pk, flow, gid, area, name, ip, process, ports, users, real_flow, created, updated) values "
 	db, _ := mysql.GetMysql()
@@ -360,6 +361,7 @@ func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 	tx.Exec("truncate table `" + TrustedListTable + "`")
 	for _, v := range trustedlistMap {
 		counter++
+		tmpUsers, _ := redis.HGetAll(k).Result()
 		tmpValues := "(':pk', :flow, :gid, ':area', ':name', ':ip', ':process', ':ports', ':users', ':real_flow', ':created', ':updated'),"
 		tmpValues = stringPlus.Strtr(tmpValues, map[string]string{
 			":pk":        v.Pk,
@@ -370,7 +372,7 @@ func InsertTrustedList(trustedlistMap map[string]TrustedList, batch int) {
 			":ip":        v.Ip,
 			":process":   v.Process,
 			":ports":     v.Ports,
-			":users":     strconv.Itoa(v.Users),
+			":users":     strconv.Itoa(len(tmpUsers)/2)),
 			":real_flow": strconv.Itoa(v.Real_flow),
 			":created":   v.Created,
 			":updated":   v.Updated,
