@@ -7,5 +7,5 @@ import (
 func main() {
 	trusted.Run()
 	trusted.Div2()
-	//trusted.InsertTrustedList(trusted.GetTrustedList(), 10000)
+	trusted.InsertTrustedList(trusted.GetTrustedList(), 10000)
 }
