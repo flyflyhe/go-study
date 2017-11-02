@@ -315,7 +315,6 @@ func Div2() {
 	stringSliceCmd := redis.Keys("*")
 	keys, _ := stringSliceCmd.Result()
 	for _, k := range keys {
-		fmt.Println(k)
 		tmpFlow, _ := redis.HGet(k, "flow").Int64()
 		redis.HSet(k, "flow", int64(tmpFlow/2))
 	}
