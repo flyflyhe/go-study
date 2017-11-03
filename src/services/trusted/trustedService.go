@@ -246,16 +246,28 @@ func Run() {
 			if tl.Flow < 100000 {
 				continue
 			}
-			rc.HSet(pk, "pk", tl.Pk)
-			rc.HSet(pk, "flow", tl.Flow)
-			rc.HSet(pk, "gid", tl.Gid)
-			rc.HSet(pk, "area", tl.Area)
-			rc.HSet(pk, "name", tl.Name)
-			rc.HSet(pk, "ip", tl.Ip)
-			rc.HSet(pk, "process", tl.Process)
-			rc.HSet(pk, "ports", tl.Ports)
-			rc.HSet(pk, "users", tl.Users)
-			rc.HSet(pk, "created", tl.Created)
+			hmsetTmp := make(map[string]interface{})
+			hmsetTmp["pk"] = tl.Pk
+			hmsetTmp["flow"] = tl.Flow
+			hmsetTmp["gid"] = tl.Gid
+			hmsetTmp["area"] = tl.Area
+			hmsetTmp["name"] = tl.Name
+			hmsetTmp["ip"] = tl.Ip
+			hmsetTmp["process"] = tl.Process
+			hmsetTmp["ports"] = tl.Ports
+			hmsetTmp["users"] = tl.Users
+			hmsetTmp["created"] = tl.Created
+			rc.HMSet(pk, hmsetTmp)
+			// rc.HSet(pk, "pk", tl.Pk)
+			// rc.HSet(pk, "flow", tl.Flow)
+			// rc.HSet(pk, "gid", tl.Gid)
+			// rc.HSet(pk, "area", tl.Area)
+			// rc.HSet(pk, "name", tl.Name)
+			// rc.HSet(pk, "ip", tl.Ip)
+			// rc.HSet(pk, "process", tl.Process)
+			// rc.HSet(pk, "ports", tl.Ports)
+			// rc.HSet(pk, "users", tl.Users)
+			// rc.HSet(pk, "created", tl.Created)
 		}
 		fmt.Println("redis6计算完成")
 	}()
