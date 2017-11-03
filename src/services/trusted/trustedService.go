@@ -228,6 +228,7 @@ func Run() {
 		defer wg.Done()
 		for tlmapTmp := range trustedlist {
 			for k, v := range tlmapTmp {
+				fmt.Println(v.Flow)
 				if _, ok := trustedlistFinal[k]; ok {
 					trustedlistFinal[k].addFlow(v.Flow)
 					//trustedlistFinal[k].addUsers(v.Users)
