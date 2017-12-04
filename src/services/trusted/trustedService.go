@@ -84,8 +84,8 @@ func (tlu *TrustedListUser) mergePorts(ports string) {
 
 func GetUserSpeedHistoryData() map[int]UidGid {
 	data := make(map[int]UidGid)
-	startDate := date.GetDateMorning(-2)
-	endDate := date.GetDateNight(-1)
+	startDate := date.GetDateMorning(0)
+	endDate := date.GetDateNight(0)
 	sql := "select vni,uid,gid  from `" + USH + "` where startDate > ? and endDate < ?"
 	fmt.Println(startDate, endDate, sql)
 
@@ -115,8 +115,8 @@ func Run() {
 	limit := 20000
 	ushData := GetUserSpeedHistoryData()
 	gameData := clientGame.GetGame()
-	startId := traffic.GetStartId(-1)
-	endId := traffic.GetEndId(-1)
+	startId := traffic.GetStartId(0)
+	endId := traffic.GetEndId(0)
 	times := CoumputeTimes(startId, endId, limit)
 	todey := date.GetDateMorning(-1)
 	wg.Add(times)
