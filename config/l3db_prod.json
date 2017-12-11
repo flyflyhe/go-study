@@ -1,9 +1,0 @@
-{
-    "driver":"mysql",
-    "username":"l3dbmasteruser",
-    "password":"qn4u8b5HW1Xa9L3f",
-    "port":"3306",
-    "host":"rm-wz9xl80aji73zkk7e.mysql.rds.aliyuncs.com",
-    "database":"lonlife",
-    "dsn":"l3dbmasteruser:qn4u8b5HW1Xa9L3f@tcp(rm-wz9xl80aji73zkk7e.mysql.rds.aliyuncs.com:3306)/lonlife?charset=utf8"
-}

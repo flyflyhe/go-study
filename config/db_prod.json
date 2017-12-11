@@ -1,9 +1,0 @@
-{
-    "driver":"mysql",
-    "username":"root",
-    "password":"^YHNMJU&8ikm",
-    "port":"3306",
-    "host":"127.0.0.1",
-    "database":"lonlife",
-    "dsn":"root:^YHNMJU&8ikm@tcp(127.0.0.1:3306)/lonlife?charset=utf8"
-}
