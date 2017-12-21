@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 	"regexp"
-	"fmt"
 )
 
 type Handle struct {
